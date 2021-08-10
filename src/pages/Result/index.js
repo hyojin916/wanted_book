@@ -1,24 +1,25 @@
-import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchBooks, selectBooks } from 'store/books'
-import SearchForm from 'components/SearchForm'
-import Books from 'components/Books'
-import Pagination from 'components/Books/Pagination'
-import Stack from 'components/Stack'
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooks } from "saga/book";
+import { selectBooks } from "store/books";
+import SearchForm from "components/SearchForm";
+import Books from "components/Books";
+import Pagination from "components/Books/Pagination";
+import Stack from "components/Stack";
 
 function Result() {
-  const dispatch = useDispatch()
-  const { search } = useLocation()
-  const { items } = useSelector(selectBooks)
+  const dispatch = useDispatch();
+  const { search } = useLocation();
+  const { items } = useSelector(selectBooks);
 
   useEffect(() => {
     if (!search) {
-      return
+      return;
     }
 
-    dispatch(fetchBooks(search))
-  }, [dispatch, search])
+    dispatch(fetchBooks(search));
+  }, [dispatch, search]);
 
   return (
     <div className={styles.wrapper}>
@@ -28,11 +29,11 @@ function Result() {
         <Pagination />
       </Stack>
     </div>
-  )
+  );
 }
 
 const styles = {
-  wrapper: 'pb-4'
-}
+  wrapper: "pb-4",
+};
 
-export default Result
+export default Result;

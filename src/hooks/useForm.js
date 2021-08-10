@@ -1,79 +1,80 @@
-import { useReducer } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
-import { stringifyUrl, parse } from 'query-string'
-import { flow, omitBy, isEmpty } from 'lodash/fp'
+import { useReducer } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import ROUTES from "utils/routerPath";
+import { stringifyUrl, parse } from "query-string";
+import { flow, omitBy, isEmpty } from "lodash/fp";
 
 const initialState = {
-  q: '',
-  orderBy: 'relevance',
-  filter: '',
-  printType: 'all'
-}
+  q: "",
+  orderBy: "relevance",
+  filter: "",
+  printType: "all",
+};
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'change':
+    case "change":
       return {
         ...state,
-        ...action.payload
-      }
+        ...action.payload,
+      };
     default:
-      return state
+      return state;
   }
 }
 
 function useForm() {
-  const history = useHistory()
-  const location = useLocation()
+  const history = useHistory();
+  const location = useLocation();
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    ...parse(location.search)
-  })
+    ...parse(location.search),
+  });
 
   function handleRouter(query) {
     const path = stringifyUrl({
-      url: '/result',
-      query
-    })
+      url: ROUTES.RESULT,
+      query,
+    });
 
-    history.push(path)
+    history.push(path);
   }
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    const query = flow(omitBy(isEmpty))(state)
+    const query = flow(omitBy(isEmpty))(state);
 
-    handleRouter(query)
+    handleRouter(query);
   }
 
   function handleChange(e) {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     dispatch({
-      type: 'change',
+      type: "change",
       payload: {
-        [name]: value
-      }
-    })
+        [name]: value,
+      },
+    });
   }
 
   function handleSelect(e) {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
-    handleChange(e)
+    handleChange(e);
     handleRouter({
       ...parse(location.search),
-      [name]: value
-    })
+      [name]: value,
+    });
   }
 
   return {
     state,
     handleChange,
     handleSelect,
-    handleSubmit
-  }
+    handleSubmit,
+  };
 }
 
-export default useForm
+export default useForm;

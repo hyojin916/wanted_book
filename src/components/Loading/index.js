@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function Loading() {
-  return <marquee>📚</marquee>
+  return <marquee>📚</marquee>;
 }
 
-export default Loading
+export default Loading;
